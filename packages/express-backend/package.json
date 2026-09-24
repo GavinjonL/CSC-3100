@@ -1,15 +1,15 @@
 {
-  "name": "csc-3100-app",
+  "name": "express-backend",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "backend.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
