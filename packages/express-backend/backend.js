@@ -15,11 +15,16 @@ const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
 const findUserByJob = (id) =>
-    users["users_list"].find((user) => user["job"] === job);
+  users["users_list"].find((user) => user["job"] === job);
 
 const addUser = (user) => {
   users["users_list"].push(user);
   return user;
+};
+
+const generateID = () => {
+  const random_number = Math.trunc(Math.random() * 100);
+  return random_number;
 };
 
 app.get("/", (req, res) => {
@@ -42,12 +47,12 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/users/search", (req, res) => {
-    const name = req.query.name;
-    const job = req.query.job;
-    const result = users["users_list"].filter((user) => {
-        return user["name"] === name && user["job"] === job;
-    });
-    res.send(result);
+  const name = req.query.name;
+  const job = req.query.job;
+  const result = users["users_list"].filter((user) => {
+    return user["name"] === name && user["job"] === job;
+  });
+  res.send(result);
 });
 
 app.get("/users/:id", (req, res) => {
@@ -63,21 +68,25 @@ app.get("/users/:id", (req, res) => {
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
-  res.send();
+  res.status(201).send();
+});
+
+app.post("/users", (req, res) => {
+  const userToAdd = req.body;
+  userToAdd.id = generateID();
+  users["users_list"].push(userToAdd);
+  res.status(201).send(userToAdd);
 });
 
 app.delete("/users/:id", (req, res) => {
-    const id = req.params["id"];
-    const index = users["users_list"].findIndex(
-        (user) => user["id"] === id
-    );
-    if (index === -1){
-        res.status(404).send("Resource not found.");
-    }
-    else {
-        users["users_list"].splice(index, 1);
-        res.status(204).send();
-    }
+  const id = req.params["id"];
+  const index = users["users_list"].findIndex((user) => user["id"] === id);
+  if (index === -1) {
+    res.status(404).send("Resource not found.");
+  } else {
+    users["users_list"].splice(index, 1);
+    res.status(204).send();
+  }
 });
 
 app.listen(port, () => {
@@ -112,9 +121,9 @@ const users = {
       job: "Bartender",
     },
     {
-        "id": "qwe123",
-        "job": "Zookeeper",
-        "name": "Cindy"
+      id: "qwe123",
+      job: "Zookeeper",
+      name: "Cindy",
     },
   ],
 };
