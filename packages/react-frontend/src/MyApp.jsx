@@ -49,10 +49,28 @@ function MyApp() {
   }
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+    const selectedCharacter = characters[index];
+    deleteHelper(selectedCharacter.id)
+    .then((res) => {
+      if (res.status === 204){
+        const updated = characters.filter((character, i) => {
+          return i !== index;
+        });
+        setCharacters(updated);
+      } else {
+        throw Error("Status is not 204");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-    setCharacters(updated);
+  }
+
+  function deleteHelper(id){
+    const promise = fetch(`http://localhost:8000/users/${id}`, {
+      method: "DELETE",
+    });
+    return promise;
   }
 
   return (
