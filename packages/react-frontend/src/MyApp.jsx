@@ -50,7 +50,7 @@ function MyApp() {
 
   function removeOneCharacter(index) {
     const selectedCharacter = characters[index];
-    deleteHelper(selectedCharacter.id)
+    deleteHelper(selectedCharacter._id)
     .then((res) => {
       if (res.status === 204){
         const updated = characters.filter((character, i) => {
